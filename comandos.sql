@@ -1,3 +1,4 @@
+-- PUNTO 1
 -- Platillo más gustado por día específico
 SELECT Platillo.idPlatillo, Platillo.nombre, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Platillo
 INNER JOIN RatingPlatillo ON RatingPlatillo.idPlatillo = Platillo.idPlatillo
@@ -42,6 +43,64 @@ GROUP BY Platillo.idPlatillo
 ORDER BY puntajePromedio DESC LIMIT 1;
 
 -- Mismos cambios de arriba para seleccionar por semestre, año, etc
+
+
+
+-- PUNTO 2
+
+-- Horario más popular en un restaurante en específico
+SELECT TiempoComida.idTiempoComida, TiempoComida.nombre, COUNT(TiempoComida.idTiempoComida) AS cantidadDeRatings FROM Restaurante
+INNER JOIN TiempoComida ON TiempoComida.idRestaurante = Restaurante.idRestaurante
+INNER JOIN RatingPlatillo ON RatingPlatillo.idTiempoComida = TiempoComida.idTiempoComida
+INNER JOIN Platillo ON RatingPlatillo.idPlatillo = Platillo.idPlatillo
+AND strftime('%d', RatingPlatillo.fecha) = "06"
+AND strftime('%m', RatingPlatillo.fecha) = "09"
+AND strftime('%Y', RatingPlatillo.fecha) = "2018"
+AND Restaurante.nombre = "Restaurante El Chef Milton"
+GROUP BY TiempoComida.idTiempoComida
+ORDER BY cantidadDeRatings DESC LIMIT 4;
+
+
+-- Horario más popular de TODOS los restaurantes
+SELECT TiempoComida.idTiempoComida, TiempoComida.nombre, COUNT(TiempoComida.idTiempoComida) AS cantidadDeRatings FROM Platillo
+INNER JOIN RatingPlatillo ON RatingPlatillo.idPlatillo = Platillo.idPlatillo
+INNER JOIN TiempoComida ON TiempoComida.idTiempoComida = RatingPlatillo.idTiempoComida
+WHERE strftime('%d', RatingPlatillo.fecha) = "06"
+AND strftime('%m', RatingPlatillo.fecha) = "09"
+AND strftime('%Y', RatingPlatillo.fecha) = "2018"
+GROUP BY TiempoComida.nombre
+ORDER BY cantidadDeRatings DESC LIMIT 4;
+
+
+-- PUNTO 3
+-- Carrera más participativa de TODOS  los restaurantes
+SELECT idRestaurante, nombreRestaurante, idCarrera, nombreCarrera, MAX(cantidadDeRatings) AS ratingsPorLaCarrera FROM(
+	SELECT Restaurante.idRestaurante, Restaurante.nombre as nombreRestaurante, Carrera.idCarrera, Carrera.nombre AS nombreCarrera, COUNT(Carrera.idCarrera) AS cantidadDeRatings FROM Restaurante
+	INNER JOIN TiempoComida ON TiempoComida.idRestaurante = Restaurante.idRestaurante
+	INNER JOIN RatingPlatillo ON RatingPlatillo.idTiempoComida = TiempoComida.idTiempoComida
+	INNER JOIN Estudiante ON Estudiante.idEstudiante = RatingPlatillo.idEstudiante
+	INNER JOIN Carrera ON Carrera.idCarrera = Estudiante.idEstudiante
+	GROUP BY Restaurante.idRestaurante, Carrera.idCarrera
+	ORDER BY cantidadDeRatings DESC
+)
+GROUP BY idRestaurante
+
+-- PUNTO 4
+-- ESTUDIANTE MÁS PARTICIPATIVO
+SELECT Estudiante.idEstudiante, Estudiante.nombre, Estudiante.apellidos, COUNT(RatingPlatillo.idRatingPlatillo) AS totalDeRatings FROM Estudiante
+INNER JOIN RatingPlatillo ON RatingPlatillo.idEstudiante = Estudiante.idEstudiante
+GROUP BY RatingPlatillo.idEstudiante
+ORDER BY totalDeRatings DESC LIMIT 1;
+
+-- PUNTO 5
+-- RATING PROMEDIO PARA CADA RESTAURANTE
+SELECT Restaurante.idRestaurante, Restaurante.nombre, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Restaurante
+INNER JOIN TiempoComida ON  TiempoComida.idRestaurante = Restaurante.idRestaurante
+INNER JOIN RatingPlatillo ON RatingPlatillo.idTiempoComida = TiempoComida.idTiempoComida
+GROUP BY Restaurante.idRestaurante
+ORDER BY puntajePromedio DESC;
+
+
 
 
 
