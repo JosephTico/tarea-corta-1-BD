@@ -28,6 +28,18 @@ GROUP BY Platillo.idPlatillo
 ORDER BY puntajePromedio DESC LIMIT 1;
 
 
+-- ALTERNATIVA PARA RAUL, PLATO MAS GUSTADO DE CADA SEMESTRE
+SELECT semestre, idPlatillo, nombrePlatillo, MAX(puntajePromedio) AS puntajePromedio
+FROM (
+	SELECT Semestre.nombre as semestre, Platillo.idPlatillo, Platillo.nombre AS nombrePlatillo, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Semestre
+	INNER JOIN RatingPlatillo ON 
+		strftime('%s', RatingPlatillo.fecha) BETWEEN strftime('%s', Semestre.fechaInicio) AND strftime('%s', Semestre.fechaFinal)
+	INNER JOIN Platillo on Platillo.idPlatillo = RatingPlatillo.idPlatillo
+	GROUP BY Semestre.idSemestre, Platillo.idPlatillo
+	ORDER BY puntajePromedio DESC
+)
+GROUP BY semestre;
+
 
 -- Platilo más gustado de un restaurante específico en un día específico
 SELECT Platillo.idPlatillo, Platillo.nombre, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Restaurante
