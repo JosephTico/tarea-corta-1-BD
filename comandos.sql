@@ -79,7 +79,7 @@ GROUP BY mes;
 -- Plato más gustado de cada semestre
 SELECT semestre, idPlatillo, nombrePlatillo, MAX(puntajePromedio) AS puntajePromedio
 FROM (
-	SELECT Semestre.nombre as semestre, Platillo.idPlatillo, Platillo.nombre AS nombrePlatillo, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Semestre
+	SELECT Semestre.nombre AS semestre, Platillo.idPlatillo, Platillo.nombre AS nombrePlatillo, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Semestre
 	INNER JOIN RatingPlatillo ON 
 		strftime('%s', RatingPlatillo.fecha) BETWEEN strftime('%s', Semestre.fechaInicio) AND strftime('%s', Semestre.fechaFinal)
 	INNER JOIN Platillo on Platillo.idPlatillo = RatingPlatillo.idPlatillo
