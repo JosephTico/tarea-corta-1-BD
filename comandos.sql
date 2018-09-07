@@ -107,9 +107,9 @@ SELECT TiempoComida.idTiempoComida, TiempoComida.nombre, COUNT(TiempoComida.idTi
 INNER JOIN TiempoComida ON TiempoComida.idRestaurante = Restaurante.idRestaurante
 INNER JOIN RatingPlatillo ON RatingPlatillo.idTiempoComida = TiempoComida.idTiempoComida
 INNER JOIN Platillo ON RatingPlatillo.idPlatillo = Platillo.idPlatillo
-AND strftime('%d', RatingPlatillo.fecha) = "06"
-AND strftime('%m', RatingPlatillo.fecha) = "09"
-AND strftime('%Y', RatingPlatillo.fecha) = "2018"
+--AND strftime('%d', RatingPlatillo.fecha) = "06"
+--AND strftime('%m', RatingPlatillo.fecha) = "09"
+--AND strftime('%Y', RatingPlatillo.fecha) = "2018"
 AND Restaurante.nombre = "Restaurante El Chef Milton"
 GROUP BY TiempoComida.idTiempoComida
 ORDER BY cantidadDeRatings DESC LIMIT 4;
@@ -119,9 +119,9 @@ ORDER BY cantidadDeRatings DESC LIMIT 4;
 SELECT TiempoComida.idTiempoComida, TiempoComida.nombre, COUNT(TiempoComida.idTiempoComida) AS cantidadDeRatings FROM Platillo
 INNER JOIN RatingPlatillo ON RatingPlatillo.idPlatillo = Platillo.idPlatillo
 INNER JOIN TiempoComida ON TiempoComida.idTiempoComida = RatingPlatillo.idTiempoComida
-WHERE strftime('%d', RatingPlatillo.fecha) = "06"
-AND strftime('%m', RatingPlatillo.fecha) = "09"
-AND strftime('%Y', RatingPlatillo.fecha) = "2018"
+--WHERE strftime('%d', RatingPlatillo.fecha) = "06"
+--AND strftime('%m', RatingPlatillo.fecha) = "09"
+--AND strftime('%Y', RatingPlatillo.fecha) = "2018"
 GROUP BY TiempoComida.nombre
 ORDER BY cantidadDeRatings DESC LIMIT 4;
 
