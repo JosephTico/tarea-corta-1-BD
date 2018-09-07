@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS `TiempoComida` (
 	`horaInicio`	TEXT NOT NULL,
 	`horaFinal`	TEXT NOT NULL,
 	`descripcion`	TEXT,
-	PRIMARY KEY(`idTiempoComida`),
-	FOREIGN KEY(`idRestaurante`) REFERENCES `Restaurante`(`idRestaurante`)
+	FOREIGN KEY(`idRestaurante`) REFERENCES `Restaurante`(`idRestaurante`),
+	PRIMARY KEY(`idTiempoComida`)
 );
 INSERT INTO `TiempoComida` VALUES (1,1,'Almuerzo','11:00 AM','1:00 PM','Deliciosos y económicos almuerzos');
 INSERT INTO `TiempoComida` VALUES (2,1,'Cena','6:00 PM','7:30 PM','Deliciosos y económicas cenas');
@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS `Restaurante` (
 	`telefono`	INTEGER,
 	`ubicacion`	TEXT,
 	`idSede`	INTEGER NOT NULL,
-	PRIMARY KEY(`idRestaurante`),
-	FOREIGN KEY(`idSede`) REFERENCES `Sede`(`idSede`)
+	FOREIGN KEY(`idSede`) REFERENCES `Sede`(`idSede`),
+	PRIMARY KEY(`idRestaurante`)
 );
 INSERT INTO `Restaurante` VALUES (1,'Restaurante El Chef Milton','Delicias deliciosas','https://dummy.com/image.png',25500000,'En el TEC',1);
 INSERT INTO `Restaurante` VALUES (2,'Soda ASETEC','100% precios reales','https://dummy.com/image.png',25500001,'Por la biblioteca',1);
@@ -64,10 +64,10 @@ CREATE TABLE IF NOT EXISTS `RatingPlatillo` (
 	`puntaje`	REAL NOT NULL,
 	`fecha`	TEXT NOT NULL,
 	`comentario`	TEXT,
-	PRIMARY KEY(`idRatingPlatillo`),
-	FOREIGN KEY(`idPlatillo`) REFERENCES `Platillo`(`idPlatillo`),
 	FOREIGN KEY(`idTiempoComida`) REFERENCES `TiempoComida`(`idTiempoComida`),
-	FOREIGN KEY(`idEstudiante`) REFERENCES `Restaurante`(`idRestaurante`)
+	FOREIGN KEY(`idPlatillo`) REFERENCES `Platillo`(`idPlatillo`),
+	PRIMARY KEY(`idRatingPlatillo`),
+	FOREIGN KEY(`idEstudiante`) REFERENCES `Estudiante`(`idEstudiante`)
 );
 INSERT INTO `RatingPlatillo` VALUES (1,1,1,1,4.5,'2018-09-06T21:41:21+00:00','Muy bueno');
 INSERT INTO `RatingPlatillo` VALUES (2,2,1,1,3.0,'2018-09-06T21:41:21+00:00','Muy bueno');
@@ -102,9 +102,9 @@ CREATE TABLE IF NOT EXISTS `Horario` (
 	`idPlatillo`	INTEGER NOT NULL,
 	`idTiempoComida`	INTEGER NOT NULL,
 	`dia`	TEXT NOT NULL,
-	PRIMARY KEY(`idHorario`),
+	FOREIGN KEY(`idTiempoComida`) REFERENCES `TiempoComida`(`idTiempoComida`),
 	FOREIGN KEY(`idPlatillo`) REFERENCES `Platillo`(`idPlatillo`),
-	FOREIGN KEY(`idTiempoComida`) REFERENCES `TiempoComida`(`idTiempoComida`)
+	PRIMARY KEY(`idHorario`)
 );
 INSERT INTO `Horario` VALUES (1,1,1,'2018-09-06');
 INSERT INTO `Horario` VALUES (2,2,1,'2018-09-06');
@@ -145,8 +145,8 @@ CREATE TABLE IF NOT EXISTS `Estudiante` (
 	`idCarrera`	INTEGER NOT NULL,
 	`email`	TEXT NOT NULL,
 	`contrasena`	TEXT NOT NULL,
-	FOREIGN KEY(`idCarrera`) REFERENCES `Carrera`(`idCarrera`),
-	PRIMARY KEY(`idEstudiante`)
+	PRIMARY KEY(`idEstudiante`),
+	FOREIGN KEY(`idCarrera`) REFERENCES `Carrera`(`idCarrera`)
 );
 INSERT INTO `Estudiante` VALUES (1,'Daniel
 ','Castro',1,'aasa@dds.com','michaelgutierritos23');
@@ -159,8 +159,8 @@ CREATE TABLE IF NOT EXISTS `Carrera` (
 	`idCarrera`	INTEGER NOT NULL,
 	`idUniversidad`	INTEGER NOT NULL,
 	`nombre`	TEXT NOT NULL,
-	FOREIGN KEY(`idUniversidad`) REFERENCES `Universidad`(`idUniversidad`),
-	PRIMARY KEY(`idCarrera`)
+	PRIMARY KEY(`idCarrera`),
+	FOREIGN KEY(`idUniversidad`) REFERENCES `Universidad`(`idUniversidad`)
 );
 INSERT INTO `Carrera` VALUES (1,1,'Ingeniería en Computación');
 INSERT INTO `Carrera` VALUES (2,1,'Ingeniería en Computadores');
