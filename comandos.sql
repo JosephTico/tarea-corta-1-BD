@@ -82,7 +82,7 @@ FROM (
 	SELECT Semestre.nombre AS semestre, Platillo.idPlatillo, Platillo.nombre AS nombrePlatillo, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Semestre
 	INNER JOIN RatingPlatillo ON 
 		strftime('%s', RatingPlatillo.fecha) BETWEEN strftime('%s', Semestre.fechaInicio) AND strftime('%s', Semestre.fechaFinal)
-	INNER JOIN Platillo on Platillo.idPlatillo = RatingPlatillo.idPlatillo
+	INNER JOIN Platillo ON Platillo.idPlatillo = RatingPlatillo.idPlatillo
 	GROUP BY Semestre.idSemestre, Platillo.idPlatillo
 	ORDER BY puntajePromedio DESC
 )
@@ -91,7 +91,7 @@ GROUP BY semestre;
 -- Plato más gustado de cada restaurante
 SELECT idRestaurante, nombreRestaurante, idPlatillo, nombrePlatillo, MAX(puntajePromedio) AS puntajePromedio
 FROM (
-	SELECT Restaurante.idRestaurante, Restaurante.nombre as nombreRestaurante, Platillo.idPlatillo, Platillo.nombre as nombrePlatillo, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Restaurante
+	SELECT Restaurante.idRestaurante, Restaurante.nombre AS nombreRestaurante, Platillo.idPlatillo, Platillo.nombre AS nombrePlatillo, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Restaurante
 	INNER JOIN TiempoComida ON TiempoComida.idRestaurante = Restaurante.idRestaurante
 	INNER JOIN RatingPlatillo ON RatingPlatillo.idTiempoComida = TiempoComida.idTiempoComida
 	INNER JOIN Platillo ON RatingPlatillo.idPlatillo = Platillo.idPlatillo
@@ -129,7 +129,7 @@ ORDER BY cantidadDeRatings DESC LIMIT 4;
 -- PUNTO 3
 -- Carrera más participativa de TODOS  los restaurantes
 SELECT idRestaurante, nombreRestaurante, idCarrera, nombreCarrera, MAX(cantidadDeRatings) AS ratingsPorLaCarrera FROM(
-	SELECT Restaurante.idRestaurante, Restaurante.nombre as nombreRestaurante, Carrera.idCarrera, Carrera.nombre AS nombreCarrera, COUNT(Carrera.idCarrera) AS cantidadDeRatings FROM Restaurante
+	SELECT Restaurante.idRestaurante, Restaurante.nombre AS nombreRestaurante, Carrera.idCarrera, Carrera.nombre AS nombreCarrera, COUNT(Carrera.idCarrera) AS cantidadDeRatings FROM Restaurante
 	INNER JOIN TiempoComida ON TiempoComida.idRestaurante = Restaurante.idRestaurante
 	INNER JOIN RatingPlatillo ON RatingPlatillo.idTiempoComida = TiempoComida.idTiempoComida
 	INNER JOIN Estudiante ON Estudiante.idEstudiante = RatingPlatillo.idEstudiante
