@@ -59,9 +59,9 @@ ORDER BY puntajePromedio DESC LIMIT 1;
 -- Platillo más gustado de cada dia
 SELECT dia, idPlatillo, nombre, MAX(puntajePromedio) AS puntajePromedio
 FROM (
-	SELECT strftime('%m-%Y-%d', RatingPlatillo.fecha) AS dia, Platillo.idPlatillo, Platillo.nombre, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Platillo
+	SELECT strftime('%Y-%m-%d', RatingPlatillo.fecha) AS dia, Platillo.idPlatillo, Platillo.nombre, AVG(RatingPlatillo.puntaje) AS puntajePromedio FROM Platillo
 	INNER JOIN RatingPlatillo ON RatingPlatillo.idPlatillo = Platillo.idPlatillo
-	GROUP BY strftime('%m-%Y-%d', RatingPlatillo.fecha), Platillo.idPlatillo
+	GROUP BY strftime('%Y-%m-%d', RatingPlatillo.fecha), Platillo.idPlatillo
 	ORDER BY puntajePromedio DESC
 	)
 GROUP BY dia;
